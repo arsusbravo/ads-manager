@@ -13,7 +13,7 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
             $table->string('external_id')->nullable();
             $table->string('sku')->nullable();
-            $table->json('attributes')->nullable(); // e.g. {"color":"red","size":"M"}
+            $table->longText('attributes')->nullable(); // e.g. {"color":"red","size":"M"}
             $table->decimal('price', 10, 2)->nullable();
             $table->unsignedInteger('stock')->default(0);
             $table->timestamps();

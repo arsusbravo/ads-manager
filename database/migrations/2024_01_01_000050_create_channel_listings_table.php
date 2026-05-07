@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('external_listing_id')->nullable();
             $table->enum('status', ['pending', 'active', 'error', 'delisted'])->default('pending');
             $table->text('error_message')->nullable();
-            $table->json('listing_data')->nullable(); // channel-specific overrides
+            $table->longText('listing_data')->nullable(); // channel-specific overrides
             $table->timestamp('last_pushed_at')->nullable();
             $table->timestamps();
 

@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('channel_type'); // woocommerce, shopify, magento, bol, amazon, google_ads, facebook_ads
             $table->string('name');
             $table->text('credentials'); // encrypted JSON blob
-            $table->json('meta')->nullable(); // channel-specific settings
+            $table->longText('meta')->nullable(); // channel-specific settings
             $table->enum('status', ['active', 'inactive', 'error'])->default('inactive');
             $table->timestamp('token_expires_at')->nullable();
             $table->timestamp('last_used_at')->nullable();

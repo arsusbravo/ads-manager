@@ -13,8 +13,8 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->string('job_type');
             $table->enum('status', ['pending', 'running', 'done', 'failed'])->default('pending');
-            $table->json('payload')->nullable();
-            $table->json('result')->nullable();
+            $table->longText('payload')->nullable();
+            $table->longText('result')->nullable();
             $table->text('error')->nullable();
             $table->timestamp('started_at')->nullable();
             $table->timestamp('finished_at')->nullable();

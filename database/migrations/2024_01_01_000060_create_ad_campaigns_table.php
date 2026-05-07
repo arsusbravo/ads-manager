@@ -15,9 +15,9 @@ return new class extends Migration
             $table->string('name');
             $table->enum('status', ['draft', 'active', 'paused', 'ended', 'error'])->default('draft');
             $table->decimal('budget', 10, 2)->nullable();
-            $table->json('ai_content')->nullable(); // generated ad copy
+            $table->longText('ai_content')->nullable(); // generated ad copy
             $table->string('external_campaign_id')->nullable();
-            $table->json('targeting')->nullable();
+            $table->longText('targeting')->nullable();
             $table->timestamps();
         });
     }

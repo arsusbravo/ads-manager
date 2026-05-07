@@ -18,10 +18,10 @@ return new class extends Migration
             $table->decimal('price', 10, 2)->nullable();
             $table->unsignedInteger('stock')->default(0);
             $table->string('sku')->nullable();
-            $table->json('images')->nullable();
-            $table->json('categories')->nullable();
-            $table->json('attributes')->nullable();
-            $table->json('raw_data')->nullable(); // full original payload
+            $table->longText('images')->nullable();
+            $table->longText('categories')->nullable();
+            $table->longText('attributes')->nullable();
+            $table->longText('raw_data')->nullable(); // full original payload
             $table->enum('status', ['active', 'inactive', 'draft'])->default('active');
             $table->timestamps();
 
