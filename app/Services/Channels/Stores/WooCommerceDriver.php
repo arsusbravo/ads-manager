@@ -26,6 +26,12 @@ class WooCommerceDriver extends AbstractDriver
         $response = Http::withBasicAuth(...$this->auth())
             ->get($this->baseUrl() . '/system_status');
 
+        if (str_contains($response->header('Content-Type') ?? '', 'text/html')) {
+            throw new \RuntimeException(
+                'WooCommerce is not returning API data. Go to WordPress Admin → Settings → Permalinks, select "Post name", and save.'
+            );
+        }
+
         if (! $response->successful()) {
             throw new \RuntimeException('WooCommerce connection failed: ' . $response->status());
         }
@@ -44,7 +50,19 @@ class WooCommerceDriver extends AbstractDriver
             throw new \RuntimeException('WooCommerce fetchProducts failed: ' . $response->status());
         }
 
-        return array_map([$this, 'normalizeProduct'], $response->json());
+        $products = $response->json();
+
+        if (! is_array($products)) {
+            if (str_contains($response->header('Content-Type') ?? '', 'text/html')) {
+                throw new \RuntimeException(
+                    'WooCommerce is not returning API data. This is almost always caused by WordPress using "Plain" permalinks. ' .
+                    'Ask the store owner to go to WordPress Admin → Settings → Permalinks and select "Post name", then save.'
+                );
+            }
+            throw new \RuntimeException('WooCommerce returned an unexpected response (not JSON). Status: ' . $response->status());
+        }
+
+        return array_map([$this, 'normalizeProduct'], $products);
     }
 
     private function normalizeProduct(array $item): array

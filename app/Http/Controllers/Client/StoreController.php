@@ -93,6 +93,7 @@ class StoreController extends Controller
     {
         $stores = Store::where('user_id', $request->user()->id)
             ->with('channelIntegration')
+            ->withCount('products')
             ->latest()
             ->paginate(20);
 
@@ -110,9 +111,14 @@ class StoreController extends Controller
     {
         abort_if($store->user_id !== $request->user()->id, 403);
 
-        ImportProductsFromStoreJob::dispatch($store);
         $store->update(['sync_status' => 'syncing']);
 
-        return back()->with('success', 'Sync started. Products will be imported shortly.');
+        ImportProductsFromStoreJob::dispatch($store);
+
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true, 'message' => 'Sync started. Products will appear shortly.']);
+        }
+
+        return redirect()->route('stores.show', $store)->with('success', 'Sync started. Products will appear shortly.');
     }
 }

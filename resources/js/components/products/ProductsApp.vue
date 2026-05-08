@@ -96,7 +96,11 @@ export default {
 
         const data = await window.api(`/api/products?${params}`);
         this.products = data.data;
-        this.meta = data.meta;
+        this.meta = {
+          current_page: data.current_page,
+          last_page:    data.last_page,
+          total:        data.total,
+        };
       } finally {
         this.loading = false;
       }

@@ -36,7 +36,7 @@ class ImportProductsFromStoreJob implements ShouldQueue
             $log->update(['status' => 'done', 'result' => $result, 'finished_at' => now()]);
         } catch (Throwable $e) {
             $this->store->update(['sync_status' => 'error']);
-            $log->update(['status' => 'failed', 'error' => $e->getMessage(), 'finished_at' => now()]);
+            $log->update(['status' => 'failed', 'error' => mb_substr($e->getMessage(), 0, 2000), 'finished_at' => now()]);
             throw $e;
         }
     }

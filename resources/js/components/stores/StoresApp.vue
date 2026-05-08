@@ -5,10 +5,16 @@
       <a href="/stores/create" class="bg-indigo-600 text-white text-sm px-4 py-2 rounded hover:bg-indigo-700">+ Add Store</a>
     </div>
 
+    <div v-if="message" :class="message.type === 'success' ? 'bg-green-50 border-green-200 text-green-700' : 'bg-red-50 border-red-200 text-red-700'"
+      class="border rounded p-3 text-sm mb-4 flex items-center justify-between">
+      <span>{{ message.text }}</span>
+      <button @click="message = null" class="ml-4 opacity-60 hover:opacity-100">✕</button>
+    </div>
+
     <div v-if="loading" class="text-center py-12 text-gray-400">Loading…</div>
 
     <div v-else-if="stores.length === 0" class="bg-white rounded-lg shadow p-8 text-center text-gray-400">
-      No stores yet. Connect a WooCommerce, Shopify or Magento channel first, then add a store.
+      No stores yet. <a href="/channels/create" class="text-indigo-600 hover:underline">Connect a channel</a> first, then add a store here.
     </div>
 
     <div v-else class="bg-white rounded-lg shadow overflow-hidden">
@@ -19,6 +25,7 @@
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Platform</th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Last Sync</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Products</th>
             <th class="px-6 py-3"></th>
           </tr>
         </thead>
@@ -28,13 +35,15 @@
             <td class="px-6 py-4 text-sm text-gray-500 capitalize">{{ store.channel_integration?.channel_type }}</td>
             <td class="px-6 py-4">
               <span :class="syncBadge(store.sync_status)" class="px-2 py-1 rounded text-xs font-medium">
-                {{ store.sync_status }}
+                {{ store.syncing ? 'syncing…' : store.sync_status }}
               </span>
             </td>
             <td class="px-6 py-4 text-sm text-gray-400">{{ store.last_synced_at || 'Never' }}</td>
+            <td class="px-6 py-4 text-sm text-gray-600">{{ store.products_count ?? '—' }}</td>
             <td class="px-6 py-4 text-right space-x-3">
-              <button @click="sync(store)" :disabled="store.syncing" class="text-sm text-green-600 hover:underline disabled:opacity-50">
-                {{ store.syncing ? 'Syncing…' : 'Sync' }}
+              <button @click="sync(store)" :disabled="store.syncing"
+                class="text-sm text-green-600 hover:underline disabled:opacity-40 font-medium">
+                {{ store.syncing ? 'Importing…' : 'Import Products' }}
               </button>
               <a :href="`/stores/${store.id}`" class="text-sm text-indigo-600 hover:underline">View</a>
             </td>
@@ -53,6 +62,7 @@ export default {
     return {
       stores: [],
       loading: true,
+      message: null,
     };
   },
 
@@ -73,11 +83,19 @@ export default {
 
     async sync(store) {
       store.syncing = true;
+      store.sync_status = 'syncing';
+      this.message = null;
+
       try {
-        await window.api(`/stores/${store.id}/sync`, { method: 'POST' });
-        store.sync_status = 'syncing';
+        const res = await window.api(`/stores/${store.id}/sync`, { method: 'POST' });
+        store.sync_status = 'idle';
+        store.last_synced_at = new Date().toLocaleString();
+        this.message = { type: 'success', text: res.message };
+        // Refresh to get updated products_count
+        await this.fetchStores();
       } catch (e) {
-        alert('Sync failed: ' + e.message);
+        store.sync_status = 'error';
+        this.message = { type: 'error', text: e.data?.message || 'Sync failed. Check your channel credentials.' };
       } finally {
         store.syncing = false;
       }
