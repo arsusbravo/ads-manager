@@ -21,6 +21,7 @@ Route::middleware(['auth'])->prefix('api')->name('api.')->group(function () {
     Route::get('/products', [ProductController::class, 'apiIndex'])->name('products.index');
     Route::get('/channels', [ChannelController::class, 'apiIndex'])->name('channels.index');
     Route::get('/campaigns', [CampaignController::class, 'apiIndex'])->name('campaigns.index');
+    Route::get('/listings', [ListingController::class, 'apiIndex'])->name('listings.index');
 });
 
 // ── Client routes ──────────────────────────────────────────────────────────

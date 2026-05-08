@@ -11,6 +11,7 @@ import StoresApp from './components/stores/StoresApp.vue';
 import ProductsApp from './components/products/ProductsApp.vue';
 import ChannelsApp from './components/channels/ChannelsApp.vue';
 import CampaignsApp from './components/campaigns/CampaignsApp.vue';
+import ListingsApp from './components/listings/ListingsApp.vue';
 
 // Mount each component if its mount point exists in the DOM
 const mounts = {
@@ -19,6 +20,7 @@ const mounts = {
     '#products-app': ProductsApp,
     '#channels-app': ChannelsApp,
     '#campaigns-app': CampaignsApp,
+    '#listings-app': ListingsApp,
 };
 
 Object.entries(mounts).forEach(([selector, Component]) => {

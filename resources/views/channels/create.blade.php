@@ -60,16 +60,20 @@
 
                     {{-- Shopify --}}
                     <div x-show="type === 'shopify'" class="space-y-4 mb-5">
-                        <p class="text-sm text-gray-500">Find your shop domain and access token in Shopify → Apps → your private app.</p>
+                        <p class="text-sm text-gray-500">Create an app in the Shopify Dev Dashboard, then add your callback URL to the app's allowed redirect URIs before connecting.</p>
                         <div>
                             <x-input-label value="Shop Domain (mystore.myshopify.com)" />
                             <x-text-input type="text" name="credentials[shop_domain]" class="mt-1 block w-full"
                                 value="{{ old('credentials.shop_domain') }}" placeholder="mystore.myshopify.com" />
                         </div>
                         <div>
-                            <x-input-label value="Access Token" />
-                            <x-text-input type="password" name="credentials[access_token]" class="mt-1 block w-full"
-                                value="{{ old('credentials.access_token') }}" />
+                            <x-input-label value="Client ID" />
+                            <x-text-input type="text" name="credentials[client_id]" class="mt-1 block w-full"
+                                value="{{ old('credentials.client_id') }}" />
+                        </div>
+                        <div>
+                            <x-input-label value="Client Secret" />
+                            <x-text-input type="password" name="credentials[client_secret]" class="mt-1 block w-full" />
                         </div>
                     </div>
 

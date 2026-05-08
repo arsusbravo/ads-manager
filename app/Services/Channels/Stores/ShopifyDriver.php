@@ -7,10 +7,15 @@ use Illuminate\Support\Facades\Http;
 
 class ShopifyDriver extends AbstractDriver
 {
+    private function shopDomain(): string
+    {
+        $domain = $this->credentials()['shop_domain'] ?? '';
+        return rtrim(preg_replace('#^https?://#', '', $domain), '/');
+    }
+
     private function baseUrl(): string
     {
-        $domain = rtrim($this->credentials()['shop_domain'], '/');
-        return "https://{$domain}/admin/api/2024-01";
+        return "https://{$this->shopDomain()}/admin/api/2024-01";
     }
 
     private function headers(): array
@@ -20,26 +25,31 @@ class ShopifyDriver extends AbstractDriver
 
     public function getAuthUrl(): ?string
     {
-        // Shopify OAuth is handled externally via app install flow
-        // Return null here; the install URL is constructed separately
-        return null;
+        $creds = $this->credentials();
+        $callbackUrl = route('channels.callback', $this->integration);
+
+        return "https://{$this->shopDomain()}/admin/oauth/authorize?" . http_build_query([
+            'client_id'    => $creds['client_id'],
+            'scope'        => 'read_products',
+            'redirect_uri' => $callbackUrl,
+            'state'        => $this->integration->id,
+        ]);
     }
 
     public function handleOAuthCallback(array $params): void
     {
-        // Exchange the code for a permanent access token
-        $domain = $this->credentials()['shop_domain'];
-        $response = Http::post("https://{$domain}/admin/oauth/access_token", [
-            'client_id'     => config('services.shopify.client_id'),
-            'client_secret' => config('services.shopify.client_secret'),
+        $creds = $this->credentials();
+
+        $response = Http::post("https://{$this->shopDomain()}/admin/oauth/access_token", [
+            'client_id'     => $creds['client_id'],
+            'client_secret' => $creds['client_secret'],
             'code'          => $params['code'],
         ]);
 
         if (! $response->successful()) {
-            throw new \RuntimeException('Shopify OAuth token exchange failed.');
+            throw new \RuntimeException('Shopify OAuth token exchange failed: ' . $response->body());
         }
 
-        $creds = $this->integration->credentials;
         $creds['access_token'] = $response->json('access_token');
         $this->integration->credentials = $creds;
         $this->integration->save();

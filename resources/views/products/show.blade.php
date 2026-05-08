@@ -56,7 +56,14 @@
                             @foreach($product->variants as $variant)
                                 <tr>
                                     <td class="px-4 py-3 text-sm font-mono text-gray-400">{{ $variant->sku ?: '—' }}</td>
-                                    <td class="px-4 py-3 text-sm text-gray-600">{{ implode(', ', array_map(fn($k,$v) => "$k: $v", array_keys($variant->attributes ?? []), $variant->attributes ?? [])) ?: '—' }}</td>
+                                    @php
+                                        $parts = [];
+                                        foreach ($variant->attributes ?? [] as $k => $v) {
+                                            if (is_array($v)) { foreach ($v as $ak => $av) { $parts[] = "$ak: $av"; } }
+                                            else { $parts[] = "$k: $v"; }
+                                        }
+                                    @endphp
+                                    <td class="px-4 py-3 text-sm text-gray-600">{{ implode(', ', $parts) ?: '—' }}</td>
                                     <td class="px-4 py-3 text-sm">€{{ $variant->price }}</td>
                                     <td class="px-4 py-3 text-sm">{{ $variant->stock }}</td>
                                 </tr>

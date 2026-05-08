@@ -28,7 +28,7 @@
                         @php
                             $fields = match($channel->channel_type) {
                                 'woocommerce'  => ['site_url' => 'Store URL', 'consumer_key' => 'Consumer Key', 'consumer_secret' => 'Consumer Secret'],
-                                'shopify'      => ['shop_domain' => 'Shop Domain', 'access_token' => 'Access Token'],
+                                'shopify'      => ['shop_domain' => 'Shop Domain', 'client_id' => 'Client ID', 'client_secret' => 'Client Secret'],
                                 'magento'      => ['base_url' => 'Base URL', 'access_token' => 'Access Token'],
                                 'bol'          => ['client_id' => 'Client ID', 'client_secret' => 'Client Secret'],
                                 'amazon'       => ['client_id' => 'Client ID', 'client_secret' => 'Client Secret', 'seller_id' => 'Seller ID', 'region' => 'Region'],

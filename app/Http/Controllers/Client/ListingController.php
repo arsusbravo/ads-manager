@@ -21,6 +21,16 @@ class ListingController extends Controller
         return view('listings.index', compact('listings'));
     }
 
+    public function apiIndex(Request $request)
+    {
+        $listings = ChannelListing::where('user_id', $request->user()->id)
+            ->with(['product', 'channelIntegration'])
+            ->latest()
+            ->paginate(50);
+
+        return response()->json($listings);
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
