@@ -20,10 +20,14 @@ class MagentoDriver extends AbstractDriver
     public function testConnection(): void
     {
         $response = Http::withHeaders($this->headers())
-            ->get($this->baseUrl() . '/store/storeConfigs');
+            ->get($this->baseUrl() . '/products', [
+                'searchCriteria[pageSize]'    => 1,
+                'searchCriteria[currentPage]' => 1,
+            ]);
 
         if (! $response->successful()) {
-            throw new \RuntimeException('Magento connection failed: ' . $response->status());
+            $body = $response->json('message') ?? $response->body();
+            throw new \RuntimeException('Magento connection failed: ' . $response->status() . ' — ' . mb_substr($body, 0, 300));
         }
     }
 
@@ -73,7 +77,7 @@ class MagentoDriver extends AbstractDriver
                 array_values($mediaGallery)
             ),
             'categories'   => array_map(
-                fn($id) => (string) $id,
+                fn($link) => (string) ($link['category_id'] ?? $link),
                 $item['extension_attributes']['category_links'] ?? []
             ),
             'attributes'   => [], // Extended attributes fetched separately if needed

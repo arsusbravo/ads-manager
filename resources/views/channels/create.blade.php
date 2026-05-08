@@ -75,7 +75,7 @@
 
                     {{-- Magento --}}
                     <div x-show="type === 'magento'" class="space-y-4 mb-5">
-                        <p class="text-sm text-gray-500">Create an integration token in Magento → System → Integrations.</p>
+                        <p class="text-sm text-gray-500">Create an integration in Magento → System → Integrations with Resource Access set to All, then activate it and copy the Access Token.</p>
                         <div>
                             <x-input-label value="Base URL (https://yourstore.com)" />
                             <x-text-input type="text" name="credentials[base_url]" class="mt-1 block w-full"
