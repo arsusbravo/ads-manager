@@ -23,7 +23,7 @@ class StoreController extends Controller
     public function create(Request $request)
     {
         $integrations = ChannelIntegration::where('user_id', $request->user()->id)
-            ->whereIn('channel_type', ['woocommerce', 'shopify', 'magento'])
+            ->whereIn('channel_type', ['woocommerce', 'shopify', 'magento', 'cs_cart'])
             ->where('status', 'active')
             ->get();
 

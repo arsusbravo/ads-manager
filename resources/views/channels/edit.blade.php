@@ -30,6 +30,7 @@
                                 'woocommerce'  => ['site_url' => 'Store URL', 'consumer_key' => 'Consumer Key', 'consumer_secret' => 'Consumer Secret'],
                                 'shopify'      => ['shop_domain' => 'Shop Domain', 'client_id' => 'Client ID', 'client_secret' => 'Client Secret'],
                                 'magento'      => ['base_url' => 'Base URL', 'access_token' => 'Access Token'],
+                                'cs_cart'      => ['store_url' => 'Store URL', 'api_email' => 'Admin Email', 'api_key' => 'API Key'],
                                 'bol'          => ['client_id' => 'Client ID', 'client_secret' => 'Client Secret'],
                                 'amazon'       => ['client_id' => 'Client ID', 'client_secret' => 'Client Secret', 'seller_id' => 'Seller ID', 'region' => 'Region'],
                                 'google_ads'   => ['client_id' => 'Client ID', 'client_secret' => 'Client Secret', 'developer_token' => 'Developer Token', 'customer_id' => 'Customer ID'],

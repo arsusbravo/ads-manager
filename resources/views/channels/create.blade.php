@@ -24,6 +24,7 @@
                                 <option value="woocommerce">WooCommerce</option>
                                 <option value="shopify">Shopify</option>
                                 <option value="magento">Magento 2</option>
+                                <option value="cs_cart">CS-Cart</option>
                             </optgroup>
                             <optgroup label="Marketplaces (sell products)">
                                 <option value="bol">BOL.com</option>
@@ -89,6 +90,25 @@
                             <x-input-label value="Access Token" />
                             <x-text-input type="password" name="credentials[access_token]" class="mt-1 block w-full"
                                 value="{{ old('credentials.access_token') }}" />
+                        </div>
+                    </div>
+
+                    {{-- CS-Cart --}}
+                    <div x-show="type === 'cs_cart'" class="space-y-4 mb-5">
+                        <p class="text-sm text-gray-500">Enable in CS-Cart Admin → Settings → API, then create an API key under your admin account.</p>
+                        <div>
+                            <x-input-label value="Store URL (https://yourstore.com)" />
+                            <x-text-input type="text" name="credentials[store_url]" class="mt-1 block w-full"
+                                value="{{ old('credentials.store_url') }}" placeholder="https://yourstore.com" />
+                        </div>
+                        <div>
+                            <x-input-label value="Admin Email" />
+                            <x-text-input type="text" name="credentials[api_email]" class="mt-1 block w-full"
+                                value="{{ old('credentials.api_email') }}" placeholder="admin@yourstore.com" />
+                        </div>
+                        <div>
+                            <x-input-label value="API Key" />
+                            <x-text-input type="password" name="credentials[api_key]" class="mt-1 block w-full" />
                         </div>
                     </div>
 

@@ -11,7 +11,7 @@
             @if($integrations->isEmpty())
                 <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-5 text-sm text-yellow-800">
                     No active store channels found. Please
-                    <a href="{{ route('channels.create') }}" class="underline">connect a WooCommerce, Shopify or Magento channel</a>
+                    <a href="{{ route('channels.create') }}" class="underline">connect a WooCommerce, Shopify, Magento or CS-Cart channel</a>
                     first and verify the connection.
                 </div>
             @else

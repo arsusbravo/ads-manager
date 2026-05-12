@@ -7,6 +7,7 @@ use App\Services\Channels\Contracts\ChannelDriverInterface;
 use App\Services\Channels\Stores\WooCommerceDriver;
 use App\Services\Channels\Stores\ShopifyDriver;
 use App\Services\Channels\Stores\MagentoDriver;
+use App\Services\Channels\Stores\CsCartDriver;
 use App\Services\Channels\Marketplaces\BolDriver;
 use App\Services\Channels\Marketplaces\AmazonDriver;
 use App\Services\Channels\Advertising\GoogleAdsDriver;
@@ -20,6 +21,7 @@ class ChannelManager
         'woocommerce'  => 'WooCommerce',
         'shopify'      => 'Shopify',
         'magento'      => 'Magento 2',
+        'cs_cart'      => 'CS-Cart',
         'bol'          => 'BOL.com',
         'amazon'       => 'Amazon',
         'google_ads'   => 'Google Ads',
@@ -30,6 +32,7 @@ class ChannelManager
         'woocommerce'  => WooCommerceDriver::class,
         'shopify'      => ShopifyDriver::class,
         'magento'      => MagentoDriver::class,
+        'cs_cart'      => CsCartDriver::class,
         'bol'          => BolDriver::class,
         'amazon'       => AmazonDriver::class,
         'google_ads'   => GoogleAdsDriver::class,
